@@ -1,5 +1,5 @@
 # Name- Amanpreet Singh
-# Student ID- 200530998
+# Student ID- 200542344
 # Subject- Linux Assignment 2 (System Modification)
 
 #!/bin/bash
