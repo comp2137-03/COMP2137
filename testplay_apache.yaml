@@ -1,0 +1,31 @@
+# Playbook to install Apache and configure UFW rules on target1
+
+# Define the tasks to be executed on the specified hosts
+- name: Install Apache and Configure Firewall
+  hosts: target1
+  remote_user: remoteadmin
+
+  tasks:
+    # Task to install Apache2 using the 'apt' package manager
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: present  # Ensures Apache2 is present
+        update_cache: yes  # Updates the package cache
+      become: yes  # Escalates privileges to execute the task
+
+    # Task to allow SSH and HTTP through UFW (Uncomplicated Firewall)
+    - name: Allow SSH and HTTP through UFW
+      ufw:
+        rule: allow  # Adds a rule to allow incoming traffic
+        port: "{{ item }}"  # Specifies the port number
+        proto: tcp  # Defines the protocol as TCP
+      with_items:
+        - 22  # Port 22 for SSH
+        - 80  # Port 80 for HTTP
+      become: yes  # Escalates privileges to execute the task
+
+    # Task to reload the UFW firewall to implement new rules
+    - name: Reload UFW
+      command: ufw reload  # Command to reload UFW
+      become: yes  # Escalates privileges to execute the task
